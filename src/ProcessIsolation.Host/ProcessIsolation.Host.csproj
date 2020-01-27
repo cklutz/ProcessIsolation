@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>pihost</AssemblyName>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>ProcessIsolation.Host</PackageId>
+    <IsTool>true</IsTool>
+    </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JKang.IpcServiceFramework.Server" Version="2.3.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProcessIsolation.Shared\ProcessIsolation.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <BuiltProjectOutputGroupOutput Include="$(ProjectDepsFilePath)">
+      <FinalOutputPath>$(ProjectDepsFilePath)</FinalOutputPath>
+    </BuiltProjectOutputGroupOutput>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="build\ProcessIsolation.Host.targets" Pack="true" PackagePath="build\" />
+    <!-- This is required to prevent the warning
+         warning NU5128: Some target frameworks declared in the dependencies group of the nuspec and the lib/ref folder
+         do not have exact matches in the other location.
+    -->
+    <Content Include="_._" Pack="true" PackagePath="lib\netcoreapp3.1" />
+  </ItemGroup>
+  
+</Project>
+
