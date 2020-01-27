@@ -27,8 +27,8 @@ The ProcessIsolation framework comes as three nuget packages:
 * `ProcessIsolation.Host`: contains the `pihost.exe` executable
 * `ProcessIsolation.Shared`: contains shared assemblies used by both of the above
 
-An example for a host process is available as [..\example\SampleHost](..\example\SampleHost).
-Typical code that could be loaded into an isolation process is available as [..\example\SampleLib](..\example\SampleLib).
+An example for a host process is available as [example/SampleHost](example/SampleHost/Program.cs).
+Typical code that could be loaded into an isolation process is available as [example/SampleLib](example/SampleLib/SampleClass.cs).
 Note that the this code has no reference to `ProcessIsolation`.
 
 Don't get bogged down by the apparent complexity of the SampleHost. It also serves as a testbed
