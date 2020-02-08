@@ -27,8 +27,3 @@ jobs:
       run: dotnet test
       env:
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
-    - name: Run Example
-      working-directory: example\SampleHost
-      run: dotnet run
-      env:
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
