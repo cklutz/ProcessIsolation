@@ -22,7 +22,8 @@ namespace ProcessIsolation.Tests.Platform
         [InlineData(int.MaxValue, 4, "cpu0 cpu1 cpu2 cpu3")]
         public void Calculate(int processorCount, int maximumProcessorCount, string expectedResult)
         {
-            Assert.Equal(expectedResult, ProcessAffinity.ToString(ProcessAffinity.Calculate(processorCount, maximumProcessorCount)));
+            Assert.Equal(expectedResult, ProcessAffinity.ToString(
+                ProcessAffinity.Calculate(processorCount, maximumProcessorCount), maximumProcessorCount, false, false));
         }
 
         [Theory]
