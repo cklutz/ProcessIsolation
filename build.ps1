@@ -84,9 +84,13 @@ if ($Tidy) {
   }
 
   Write-Host "Removing local packages from $LocalPackages"
-  Remove-Item "$LocalPackages\*.nupkg" -Force -ErrorAction Continue
+  if (Test-Path "$LocalPacages") {
+    Remove-Item "$LocalPackages\*.nupkg" -Force -ErrorAction Continue
+  }
   Write-Host "Removing local restore cache from $LocalRestorePath"
-  Remove-Item "$LocalRestorePath\*" -Recurse -Force
+  if (Test-Path "$LocalRestorePath") {
+    Remove-Item "$LocalRestorePath\*" -Recurse -Force -ErrorAction Continue
+  }
   Write-Host "Removing build logs"
   foreach ($location in $Locations) {
     Remove-Item "$PSScriptRoot\msbuild.$location.binlog" -Force -ErrorAction Continue 2> $null
