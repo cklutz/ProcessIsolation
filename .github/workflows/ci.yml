@@ -22,3 +22,13 @@ jobs:
       env:
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
       run: dotnet build --configuration Release
+    - name: Test
+      working-directory: src
+      run: dotnet test
+      env:
+        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+    - name: Run Example
+      working-directory: example\SampleHost
+      run: dotnet run
+      env:
+        DOTNET_CLI_TELEMETRY_OPTOUT: 1
