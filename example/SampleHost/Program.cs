@@ -11,6 +11,14 @@ namespace SampleHost
 {
     internal static class Program
     {
+#if DEBUG
+        private const string DefaultLocation1 = @"..\..\..\..\SampleLib\bin\Debug\netcoreapp3.1\SampleLib.dll";
+        private const string DefaultLocation2 = @"..\..\..\..\..\SampleLib\bin\Debug\netcoreapp3.1\publish\SampleLib.dll";
+#else
+        private const string DefaultLocation1 = @"..\..\..\..\SampleLib\bin\Release\netcoreapp3.1\SampleLib.dll";
+        private const string DefaultLocation2 = @"..\..\..\..\..\SampleLib\bin\Release\netcoreapp3.1\publish\SampleLib.dll";
+#endif
+
         private const string Usage = @"
 Usage: {0} [options] [-- arguments to method]
 
@@ -84,13 +92,13 @@ Options:
                 {
                     lib = Path.Combine(
                         Path.GetDirectoryName(typeof(Program).Assembly.Location),
-                        @"..\..\..\..\SampleLib\bin\Debug\netcoreapp3.1\SampleLib.dll");
+                        DefaultLocation1);
 
                     if (!File.Exists(lib))
                     {
                         lib = Path.Combine(
                             Path.GetDirectoryName(typeof(Program).Assembly.Location),
-                            @"..\..\..\..\..\SampleLib\bin\Debug\netcoreapp3.1\publish\SampleLib.dll");
+                            DefaultLocation2);
                     }
                 }
 

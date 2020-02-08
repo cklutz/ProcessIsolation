@@ -145,7 +145,7 @@ if ($Example) {
   Write-Status "Example"
   Push-Location $PSScriptRoot\example\SampleHost
   try {
-    dotnet.exe run
+    dotnet.exe run --configuration $Configuration
     Exit-IfCommandError "Run Example"
   } finally {
     Pop-Location
