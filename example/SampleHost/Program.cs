@@ -88,18 +88,34 @@ Options:
                     }
                 }
 
+                var attempts = new List<string>();
                 if (lib == null)
                 {
-                    lib = Path.Combine(
+                    lib = GetPathName(Path.Combine(
                         Path.GetDirectoryName(typeof(Program).Assembly.Location),
-                        DefaultLocation1);
+                        DefaultLocation1));
 
                     if (!File.Exists(lib))
                     {
-                        lib = Path.Combine(
+                        attempts.Add(lib);
+                        lib = GetPathName(Path.Combine(
                             Path.GetDirectoryName(typeof(Program).Assembly.Location),
-                            DefaultLocation2);
+                            DefaultLocation2));
                     }
+                }
+                else
+                {
+                    lib = GetPathName(lib);
+                }
+
+                if (!File.Exists(lib))
+                {
+                    Console.Error.WriteLine("Assembly file '{0}' does not exist.", lib);
+                    foreach (var attempt in attempts)
+                    {
+                        Console.Error.WriteLine("Also attempted '{0}' without success.", attempt);
+                    }
+                    return 99;
                 }
 
                 if (tam == null)
@@ -149,6 +165,17 @@ Options:
                 Console.Error.WriteLine(ex);
                 return ex.HResult;
             }
+        }
+
+        static string GetPathName(string str)
+        {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                str = str.Replace("\\", "/");
+            }
+
+            str = Path.GetFullPath(str);
+            return str;
         }
 
         static bool TryGetOption(ref int i, string[] args, string option, Action<string> set)

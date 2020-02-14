@@ -60,20 +60,6 @@ if ($Tidy) {
   $Clean = $true
 }
 
-if ($Clean) {
-  foreach ($location in $Locations) {
-    Write-Status "Cleaning $location"
-    Push-Location $location
-    try {
-      dotnet.exe clean --nologo --configuration $Configuration -v m
-      Exit-IfCommandError "Clean"
-    }
-    finally {
-      Pop-Location
-    }
-  }
-}
-
 if ($Tidy) {
   Write-Status "Tidy"
   Write-Host "Cleaning bin/ and obj/ folders"
@@ -84,7 +70,7 @@ if ($Tidy) {
   }
 
   Write-Host "Removing local packages from $LocalPackages"
-  if (Test-Path "$LocalPacages") {
+  if (Test-Path "$LocalPackages") {
     Remove-Item "$LocalPackages\*.nupkg" -Force -ErrorAction Continue
   }
   Write-Host "Removing local restore cache from $LocalRestorePath"
@@ -94,6 +80,20 @@ if ($Tidy) {
   Write-Host "Removing build logs"
   foreach ($location in $Locations) {
     Remove-Item "$PSScriptRoot\msbuild.$location.binlog" -Force -ErrorAction Continue 2> $null
+  }
+}
+
+if ($Clean) {
+  foreach ($location in $Locations) {
+    Write-Status "Cleaning $location"
+    Push-Location $location
+    try {
+      dotnet clean --nologo --configuration $Configuration -v m
+      Exit-IfCommandError "Clean"
+    }
+    finally {
+      Pop-Location
+    }
   }
 }
 
@@ -109,10 +109,10 @@ foreach ($location in $Locations) {
   Write-Status "Building $location"
   Push-Location $location
   try {
-    dotnet.exe restore
+    dotnet restore
     Exit-IfCommandError "Restore"
 
-    dotnet.exe build --nologo --configuration $Configuration `
+    dotnet build --nologo --configuration $Configuration `
             /binaryLogger:"$PSScriptRoot\msbuild.$location.binlog;ProjectImports=Embed" `
             $Arguments
     Exit-IfCommandError "Build"
@@ -130,7 +130,7 @@ if ($Test) {
   Write-Status "Test"
   Push-Location $PSScriptRoot\src
   try {
-    dotnet.exe test
+    dotnet test
     Exit-IfCommandError "Test"
   } finally {
     Pop-Location
@@ -145,7 +145,7 @@ if ($Example) {
   Write-Status "Example"
   Push-Location $PSScriptRoot\example\SampleHost
   try {
-    dotnet.exe run --configuration $Configuration
+    dotnet run --configuration $Configuration
     Exit-IfCommandError "Run Example"
   } finally {
     Pop-Location

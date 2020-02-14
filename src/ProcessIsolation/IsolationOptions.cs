@@ -9,7 +9,7 @@ namespace ProcessIsolation
         private bool m_dieOnCrash;
         private bool m_restartAfterCrash;
         private int m_maxRestartAttempts = 10;
-        private bool m_createJobObject = true;
+        private bool m_createJobObject;
         private TimeSpan m_startWaitTimeout = TimeSpan.Zero;
         private bool m_startWithExeLauncher;
         private IsolationLimits m_limits = new IsolationLimits();
@@ -20,6 +20,8 @@ namespace ProcessIsolation
 
         public IsolationOptions()
         {
+            m_createJobObject = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(
+                System.Runtime.InteropServices.OSPlatform.Windows);
         }
 
         public bool DieOnCrash
